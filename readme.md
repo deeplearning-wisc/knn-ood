@@ -1,6 +1,6 @@
 # Out-of-distribution Detection with Deep Nearest Neighbors
 
-This is the source code for ICML 2022 paper [Out-of-distribution Detection with Deep Nearest Neighbors](TODO)
+This is the source code for ICML 2022 paper [Out-of-distribution Detection with Deep Nearest Neighbors](https://arxiv.org/abs/2204.06507)
 by Yiyou Sun, Yifei Ming, Xiaojin Zhu and Yixuan Li.
 
 ## Usage
