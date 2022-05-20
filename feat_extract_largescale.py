@@ -63,7 +63,8 @@ if ID_RUN:
                 feat_log[start_ind:end_ind, :] = out.data.cpu().numpy()
                 label_log[start_ind:end_ind] = targets.data.cpu().numpy()
                 score_log[start_ind:end_ind] = score.data.cpu().numpy()
-                print(f"{batch_idx}/{len(in_loader)}")
+                if batch_idx % 100 == 0:
+                    print(f"{batch_idx}/{len(in_loader)}")
         else:
             feat_log = np.memmap(f"{cache_dir}/feat.mmap", dtype=float, mode='r', shape=(len(in_loader.dataset), featdim))
             score_log = np.memmap(f"{cache_dir}/score.mmap", dtype=float, mode='r', shape=(len(in_loader.dataset), num_classes))
@@ -97,41 +98,42 @@ if OOD_RUN:
                 # score = net(inputs)
                 ood_feat_log[start_ind:end_ind, :] = out.data.cpu().numpy()
                 ood_score_log[start_ind:end_ind] = score.data.cpu().numpy()
-                print(f"{batch_idx}/{len(out_loader)}")
+                if batch_idx % 100 == 0:
+                    print(f"{batch_idx}/{len(out_loader)}")
 
 
         else:
             ood_feat_log = np.memmap(f"{cache_dir}/feat.mmap", dtype=float, mode='r', shape=(len(out_loader.dataset), featdim))
             ood_score_log = np.memmap(f"{cache_dir}/score.mmap", dtype=float, mode='r', shape=(len(out_loader.dataset), num_classes))
 
-loader_test_dict = get_loader_out(args, dataset=(None, 'noise'), split=('val'))
-out_loader = loader_test_dict.val_ood_loader
-
-cache_dir = f"cache/{'noise'}vs{args.in_dataset}_{args.name}_out"
-if FORCE_RUN or not os.path.exists(cache_dir):
-    os.makedirs(cache_dir, exist_ok=True)
-    ood_feat_log = np.memmap(f"{cache_dir}/feat.mmap", dtype=float, mode='w+', shape=(len(out_loader.dataset), featdim))
-    ood_score_log = np.memmap(f"{cache_dir}/score.mmap", dtype=float, mode='w+', shape=(len(out_loader.dataset), num_classes))
-    model.eval()
-    for batch_idx, (inputs, _) in enumerate(out_loader):
-        inputs = inputs.to(device).float()
-        start_ind = batch_idx * batch_size
-        end_ind = min((batch_idx + 1) * batch_size, len(out_loader.dataset))
-
-        if args.model_arch == 'resnet50-supcon':
-            out = model.encoder(inputs)
-        else:
-            out = model.features(inputs)
-        if len(out.shape) > 2:
-            out = F.adaptive_avg_pool2d(out, 1)
-            out = out.view(out.size(0), -1)
-        score = model.fc(out)
-        # score = net(inputs)
-        ood_feat_log[start_ind:end_ind, :] = out.data.cpu().numpy()
-        ood_score_log[start_ind:end_ind] = score.data.cpu().numpy()
-        print(f"{batch_idx}/{len(out_loader)}")
-
-
-else:
-    ood_feat_log = np.memmap(f"{cache_dir}/feat.mmap", dtype=float, mode='r', shape=(len(out_loader.dataset), featdim))
-    ood_score_log = np.memmap(f"{cache_dir}/score.mmap", dtype=float, mode='r', shape=(len(out_loader.dataset), num_classes))
+# loader_test_dict = get_loader_out(args, dataset=(None, 'noise'), split=('val'))
+# out_loader = loader_test_dict.val_ood_loader
+#
+# cache_dir = f"cache/{'noise'}vs{args.in_dataset}_{args.name}_out"
+# if FORCE_RUN or not os.path.exists(cache_dir):
+#     os.makedirs(cache_dir, exist_ok=True)
+#     ood_feat_log = np.memmap(f"{cache_dir}/feat.mmap", dtype=float, mode='w+', shape=(len(out_loader.dataset), featdim))
+#     ood_score_log = np.memmap(f"{cache_dir}/score.mmap", dtype=float, mode='w+', shape=(len(out_loader.dataset), num_classes))
+#     model.eval()
+#     for batch_idx, (inputs, _) in enumerate(out_loader):
+#         inputs = inputs.to(device).float()
+#         start_ind = batch_idx * batch_size
+#         end_ind = min((batch_idx + 1) * batch_size, len(out_loader.dataset))
+#
+#         if args.model_arch == 'resnet50-supcon':
+#             out = model.encoder(inputs)
+#         else:
+#             out = model.features(inputs)
+#         if len(out.shape) > 2:
+#             out = F.adaptive_avg_pool2d(out, 1)
+#             out = out.view(out.size(0), -1)
+#         score = model.fc(out)
+#         # score = net(inputs)
+#         ood_feat_log[start_ind:end_ind, :] = out.data.cpu().numpy()
+#         ood_score_log[start_ind:end_ind] = score.data.cpu().numpy()
+#         if batch_idx % 100 == 0:
+#             print(f"{batch_idx}/{len(out_loader)}")
+#
+# else:
+#     ood_feat_log = np.memmap(f"{cache_dir}/feat.mmap", dtype=float, mode='r', shape=(len(out_loader.dataset), featdim))
+#     ood_score_log = np.memmap(f"{cache_dir}/score.mmap", dtype=float, mode='r', shape=(len(out_loader.dataset), num_classes))

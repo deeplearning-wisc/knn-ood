@@ -91,7 +91,7 @@ def get_loader_in(args, config_type='default', split=('train', 'val')):
             valset = torchvision.datasets.CIFAR100(root='./datasets/data', train=False, download=True, transform=config.transform_test)
             val_loader = torch.utils.data.DataLoader(valset, batch_size=config.batch_size, shuffle=True, **kwargs)
     elif args.in_dataset == "imagenet":
-        root = '/home/sunyiyou/dataset/imagenet'
+        root = args.imagenet_root
         # Data loading code
         if 'train' in split:
             train_loader = torch.utils.data.DataLoader(
@@ -148,36 +148,38 @@ def get_loader_out(args, dataset=('tim', 'noise'), config_type='default', split=
             val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder(root="datasets/ood_datasets/places365/", transform=transform_test),
                                                        batch_size=batch_size, shuffle=True, num_workers=2)
         elif val_dataset == 'CIFAR-100':
-            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.CIFAR100(root='./data', train=False, download=True, transform=transform_test),
+            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.CIFAR100(root='./datasets/data', train=False, download=True, transform=transform_test),
                                                        batch_size=batch_size, shuffle=True, num_workers=2)
         elif val_dataset == 'CIFAR-10':
-            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test),
+            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.CIFAR10(root='./datasets/data', train=False, download=True, transform=transform_test),
                 batch_size=batch_size, shuffle=True, num_workers=2)
         elif val_dataset == 'celebA':
             val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder(root="/media/sunyiyou/ubuntu-hdd1/dataset/celebA/small",
                                                           transform=transform_test), batch_size=batch_size, shuffle=True, num_workers=2)
         elif val_dataset == 'places50':
             val_ood_loader = torch.utils.data.DataLoader(
-                DatasetWithMeta('/home/sunyiyou/dataset/places50/',
-                                '/home/sunyiyou/dataset/places50/places50_selected_list.txt', config.transform_test_largescale),
-                batch_size=batch_size, shuffle=True, num_workers=2)
+                torchvision.datasets.ImageFolder("./datasets/ood_data/Places",
+                                                 transform=config.transform_test_largescale), batch_size=batch_size,
+                shuffle=False, num_workers=2)
         elif val_dataset == 'sun50':
             val_ood_loader = torch.utils.data.DataLoader(
-                DatasetWithMeta('/media/sunyiyou/ubuntu-hdd1/dataset/SUN50',
-                                '/media/sunyiyou/ubuntu-hdd1/dataset/SUN50/sun50_selected_list.txt', config.transform_test_largescale),
-                batch_size=batch_size, shuffle=True, num_workers=2)
+                torchvision.datasets.ImageFolder("./datasets/ood_data/SUN",
+                                                 transform=config.transform_test_largescale), batch_size=batch_size,
+                shuffle=False,
+                num_workers=2)
         elif val_dataset == 'inat':
             val_ood_loader = torch.utils.data.DataLoader(
-                DatasetWithMeta('/media/sunyiyou/ubuntu-hdd1/dataset/iNat',
-                                '/media/sunyiyou/ubuntu-hdd1/dataset/iNat/inat_plantae_selected_list_nolabel.txt', config.transform_test_largescale),
-                batch_size=batch_size, shuffle=True, num_workers=2)
+                torchvision.datasets.ImageFolder("./datasets/ood_data/iNaturalist",
+                                                 transform=config.transform_test_largescale), batch_size=batch_size,
+                shuffle=False,
+                num_workers=2)
         elif val_dataset == 'tim':
             val_ood_loader = torch.utils.data.DataLoader(
                 TinyImages(transform=transform_test),
                 batch_size=batch_size, shuffle=True, num_workers=2)
         elif val_dataset == 'imagenet':
             val_ood_loader = torch.utils.data.DataLoader(
-                torchvision.datasets.ImageFolder(os.path.join('/home/sunyiyou/dataset/imagenet', 'val'), config.transform_test_largescale),
+                torchvision.datasets.ImageFolder(os.path.join('dataset/imagenet', 'val'), config.transform_test_largescale),
                 batch_size=config.batch_size, shuffle=True, **kwargs)
         elif val_dataset == 'noise':
             val_ood_loader = torch.utils.data.DataLoader(
@@ -198,14 +200,3 @@ def get_loader_out(args, dataset=('tim', 'noise'), config_type='default', split=
         "train_ood_loader": train_ood_loader,
         "val_ood_loader": val_ood_loader,
     })
-
-def get_loader_probe(args):
-    transform = {
-        'CIFAR-10': transform_test,
-        'CIFAR-100': transform_test,
-        'imagenet': transform_test_largescale,
-    }[args.in_dataset]
-    dataset = BrodenDataset('datasets/broden/broden1_224',
-                            categories=["object", "part", "scene", "material", "texture", "color"], transform=transform)
-    return dataloader.DataLoader(dataset, batch_size=args.batch_size, shuffle=False, num_workers=2, collate_fn=broden_collate)
-

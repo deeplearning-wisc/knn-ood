@@ -1,6 +1,6 @@
 # Out-of-distribution Detection with Deep Nearest Neighbors
 
-This is the source code for paper [Out-of-distribution Detection with Deep Nearest Neighbors](TODO)
+This is the source code for ICML 2022 paper [Out-of-distribution Detection with Deep Nearest Neighbors](TODO)
 by Yiyou Sun, Yifei Ming, Xiaojin Zhu and Yixuan Li.
 
 ## Usage
@@ -48,16 +48,23 @@ We provide links and instructions to download each dataset:
 * [SVHN](http://ufldl.stanford.edu/housenumbers/test_32x32.mat): download it and place it in the folder of `datasets/ood_datasets/svhn`. Then run `python select_svhn_data.py` to generate test subset.
 * [Textures](https://www.robots.ox.ac.uk/~vgg/data/dtd/download/dtd-r1.0.1.tar.gz): download it and place it in the folder of `datasets/ood_datasets/dtd`.
 * [Places365](http://data.csail.mit.edu/places/places365/test_256.tar): download it and place it in the folder of `datasets/ood_datasets/places365/test_subset`. We randomly sample 10,000 images from the original test dataset. 
-* [LSUN-C](https://www.dropbox.com/s/fhtsw1m3qxlwj6h/LSUN.tar.gz): download it and place it in the folder of `datasets/ood_datasets/LSUN`.
-* [LSUN-R](https://www.dropbox.com/s/moqh2wh8696c3yl/LSUN_resize.tar.gz): download it and place it in the folder of `datasets/ood_datasets/LSUN_resize`.
+* [LSUN](https://www.dropbox.com/s/fhtsw1m3qxlwj6h/LSUN.tar.gz): download it and place it in the folder of `datasets/ood_datasets/LSUN`.
 * [iSUN](https://www.dropbox.com/s/ssz7qxfqae0cca5/iSUN.tar.gz): download it and place it in the folder of `datasets/ood_datasets/iSUN`.
+* [LSUN_fix](https://drive.google.com/file/d/1KVWj9xpHfVwGcErH5huVujk9snhEGOxE/view?usp=sharing): download it and place it in the folder of `datasets/ood_datasets/LSUN_fix`.
+* [ImageNet_fix](https://drive.google.com/file/d/1sO_-noq10mmziB1ECDyNhD5T4u5otyKA/view?usp=sharing): download it and place it in the folder of `datasets/ood_datasets/ImageNet_fix`.
+* [ImageNet_resize](https://www.dropbox.com/s/kp3my3412u5k9rl/Imagenet_resize.tar.gz): download it and place it in the folder of `datasets/ood_datasets/Imagenet_resize`.
 
-For example, run the following commands in the **root** directory to download **LSUN-C**:
-```
-cd datasets/ood_datasets
-wget https://www.dropbox.com/s/fhtsw1m3qxlwj6h/LSUN.tar.gz
-tar -xvzf LSUN.tar.gz
-```
+[//]: # (For example, run the following commands in the **root** directory to download **LSUN**:)
+
+[//]: # (```)
+
+[//]: # (cd datasets/ood_datasets)
+
+[//]: # (wget https://www.dropbox.com/s/fhtsw1m3qxlwj6h/LSUN.tar.gz)
+
+[//]: # (tar -xvzf LSUN.tar.gz)
+
+[//]: # (```)
 
 
 ### 3.  Pre-trained model
@@ -71,10 +78,10 @@ It is tested under Ubuntu Linux 20.04 and Python 3.8 environment, and requries s
 * [numpy](http://www.numpy.org/)
 * [sklearn](https://scikit-learn.org/stable/)
 * [faiss](https://github.com/facebookresearch/faiss)
-
+* [pytorch-vit](https://github.com/lukemelas/PyTorch-Pretrained-ViT)
 
 ## Demo
-### 1. Demo code for Large-scale Experiment 
+### 1. Demo code for ImageNet Experiment 
 
 Run `./demo_imagenet.sh`.
 
@@ -82,27 +89,18 @@ Run `./demo_imagenet.sh`.
 
 Run `./demo_cifar.sh`.
 
-[//]: # (## Citation)
 
-[//]: # ()
-[//]: # (If you use our codebase, please cite our work:)
+## Citation
 
-[//]: # (```)
 
-[//]: # (@inproceedings{sun2021dice,)
+If you use our codebase, please cite our work:
 
-[//]: # (  title={On the Effectiveness of Sparsification for Detecting the Deep Unknowns},)
+```
+@article{sun2022knnood,
+  title={Out-of-distribution Detection with Deep Nearest Neighbors},
+  author={Sun, Yiyou and Ming, Yifei and Zhu, Xiaojin and Li, Yixuan},
+  journal={ICML},
+  year={2022}
+}
+```
 
-[//]: # (  author={Sun, Yiyou and Li, Yixuan},)
-
-[//]: # (  year={2021},)
-
-[//]: # (  eprint={2111.09805},)
-
-[//]: # (  archivePrefix={arXiv},)
-
-[//]: # (  primaryClass={cs.LG})
-
-[//]: # (})
-
-[//]: # (```)

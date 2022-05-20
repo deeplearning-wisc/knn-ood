@@ -72,8 +72,8 @@ for ood_dataset in args.out_datasets:
 
 #################### KNN score OOD detection #################
 
-ALPHA = 0.01
-for K in [10]:
+ALPHA = 1.00
+for K in [1000]:
     rand_ind = np.random.choice(id_train_size, int(id_train_size * ALPHA), replace=False)
     index = faiss.IndexFlatL2(ftrain.shape[1])
     index.add(ftrain[rand_ind])
@@ -91,4 +91,3 @@ for K in [10]:
 
         metrics.print_all_results(all_results, args.out_datasets, 'KNN')
         print()
-

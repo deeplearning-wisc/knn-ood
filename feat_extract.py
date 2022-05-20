@@ -56,7 +56,8 @@ for split, in_loader in [('train', trainloaderIn), ('val', testloaderIn),]:
             feat_log[start_ind:end_ind, :] = out.data.cpu().numpy()
             label_log[start_ind:end_ind] = targets.data.cpu().numpy()
             score_log[start_ind:end_ind] = score.data.cpu().numpy()
-            print(batch_idx)
+            if batch_idx % 100 == 0:
+                print(f"{batch_idx}/{len(in_loader)}")
         np.save(cache_name, (feat_log.T, score_log.T, label_log))
     else:
         feat_log, score_log, label_log = np.load(cache_name, allow_pickle=True)
@@ -81,7 +82,8 @@ for ood_dataset in args.out_datasets:
 
             ood_feat_log[start_ind:end_ind, :] = out.data.cpu().numpy()
             ood_score_log[start_ind:end_ind] = score.data.cpu().numpy()
-            print(batch_idx)
+            if batch_idx % 100 == 0:
+                print(f"{batch_idx}/{len(out_loader)}")
         np.save(cache_name, (ood_feat_log.T, ood_score_log.T))
     else:
         ood_feat_log, ood_score_log = np.load(cache_name, allow_pickle=True)
