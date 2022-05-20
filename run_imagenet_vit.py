@@ -74,7 +74,7 @@ def feat_extract():
 
         if ood_dataset == 'dtd':
             out_loader = torch.utils.data.DataLoader(
-                torchvision.datasets.ImageFolder(root="datasets/ood_datasets/dtd/images", transform=transformer),
+                torchvision.datasets.ImageFolder(root="datasets/ood_data/dtd/images", transform=transformer),
                 batch_size=batch_size, shuffle=True, num_workers=2)
         elif ood_dataset == 'places50':
             out_loader = torch.utils.data.DataLoader(
@@ -181,7 +181,7 @@ for K in [1000]:
             all_results.append(results)
 
         print(time.time() - begin, end="\t\t")
-        metrics.print_all_results_tab(all_results, args.out_datasets, 'KNN')
+        metrics.print_all_results(all_results, args.out_datasets, 'KNN')
         print()
 
 

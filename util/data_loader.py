@@ -137,15 +137,15 @@ def get_loader_out(args, dataset=('tim', 'noise'), config_type='default', split=
         batch_size = args.batch_size
         imagesize = 224 if args.in_dataset in {'imagenet'} else 32
         if val_dataset == 'SVHN':
-            val_ood_loader = torch.utils.data.DataLoader(SVHN('datasets/ood_datasets/svhn/', split='test', transform=transform_test, download=False),
+            val_ood_loader = torch.utils.data.DataLoader(SVHN('datasets/ood_data/svhn/', split='test', transform=transform_test, download=False),
                                                        batch_size=batch_size, shuffle=False,
                                                         num_workers=2)
         elif val_dataset == 'dtd':
             transform = config.transform_test_largescale if args.in_dataset in {'imagenet'} else config.transform_test
-            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder(root="datasets/ood_datasets/dtd/images", transform=transform),
+            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder(root="datasets/ood_data/dtd/images", transform=transform),
                                                        batch_size=batch_size, shuffle=True, num_workers=2)
         elif val_dataset == 'places365':
-            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder(root="datasets/ood_datasets/places365/", transform=transform_test),
+            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder(root="datasets/ood_data/places365/", transform=transform_test),
                                                        batch_size=batch_size, shuffle=True, num_workers=2)
         elif val_dataset == 'CIFAR-100':
             val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.CIFAR100(root='./datasets/data', train=False, download=True, transform=transform_test),
@@ -153,9 +153,7 @@ def get_loader_out(args, dataset=('tim', 'noise'), config_type='default', split=
         elif val_dataset == 'CIFAR-10':
             val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.CIFAR10(root='./datasets/data', train=False, download=True, transform=transform_test),
                 batch_size=batch_size, shuffle=True, num_workers=2)
-        elif val_dataset == 'celebA':
-            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder(root="/media/sunyiyou/ubuntu-hdd1/dataset/celebA/small",
-                                                          transform=transform_test), batch_size=batch_size, shuffle=True, num_workers=2)
+            
         elif val_dataset == 'places50':
             val_ood_loader = torch.utils.data.DataLoader(
                 torchvision.datasets.ImageFolder("./datasets/ood_data/Places",
@@ -193,7 +191,7 @@ def get_loader_out(args, dataset=('tim', 'noise'), config_type='default', split=
                 LowFreqRandom(image_size=imagesize, data_size=10000),
                 batch_size=batch_size, shuffle=False, num_workers=2)
         else:
-            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder("./datasets/ood_datasets/{}".format(val_dataset),
+            val_ood_loader = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder("./datasets/ood_data/{}".format(val_dataset),
                                                           transform=transform_test), batch_size=batch_size, shuffle=False, num_workers=2)
 
     return EasyDict({

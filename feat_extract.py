@@ -89,28 +89,3 @@ for ood_dataset in args.out_datasets:
         ood_feat_log, ood_score_log = np.load(cache_name, allow_pickle=True)
         ood_feat_log, ood_score_log = ood_feat_log.T, ood_score_log.T
 print(time.time() - begin)
-
-
-loader_noise_dict = get_loader_out(args, dataset=(None, 'noise'), split=('val'))
-out_loader = loader_test_dict.val_ood_loader
-cache_name = f"cache/{'noise'}vs{args.in_dataset}_{args.name}_out_alllayers.npy"
-if FORCE_RUN or not os.path.exists(cache_name):
-    ood_feat_log = np.zeros((len(out_loader.dataset), sum(featdims)))
-    ood_score_log = np.zeros((len(out_loader.dataset), num_classes))
-
-    model.eval()
-    for batch_idx, (inputs, _) in enumerate(out_loader):
-        inputs = inputs.to(device)
-        start_ind = batch_idx * batch_size
-        end_ind = min((batch_idx + 1) * batch_size, len(out_loader.dataset))
-
-        score, feature_list = model.feature_list(inputs)
-        out = torch.cat([F.adaptive_avg_pool2d(layer_feat, 1).squeeze() for layer_feat in feature_list], dim=1)
-
-        ood_feat_log[start_ind:end_ind, :] = out.data.cpu().numpy()
-        ood_score_log[start_ind:end_ind] = score.data.cpu().numpy()
-        print(batch_idx)
-    np.save(cache_name, (ood_feat_log.T, ood_score_log.T))
-else:
-    ood_feat_log, ood_score_log = np.load(cache_name, allow_pickle=True)
-    ood_feat_log, ood_score_log = ood_feat_log.T, ood_score_log.T

@@ -18,10 +18,10 @@ def get_args():
     parser.add_argument('--name', default="resnet18-supcon", type=str, help='neural network name and training set')
     parser.add_argument('--model-arch', default='resnet18-supcon', type=str, help='model architecture')
     parser.add_argument('--p', default=0, type=float, help='sparsity level')
-    parser.add_argument('--imagenet-root', default='./datasets/ILSVRC-2012/', type=str, help='imagenet root')
+    parser.add_argument('--imagenet-root', default='./datasets/imagenet/', type=str, help='imagenet root')
     parser.add_argument('--seed', default=0, type=int, help='seed')
 
-
+    parser.add_argument('--method', default='', type=str, help='')
     parser.add_argument('--epochs', default=500, type=int, help='number of total epochs to run')
     parser.add_argument('-b', '--batch-size', default=64, type=int, help='mini-batch size')
     parser.add_argument('--lr', '--learning-rate', default=0.1, type=float,
