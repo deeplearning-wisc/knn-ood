@@ -26,10 +26,10 @@ def get_model(args, num_classes, load_ckpt=True, load_epoch=None):
         if args.model_arch == 'densenet':
             model = dn.DenseNet3(args.layers, num_classes, args.growth, reduction=args.reduce, bottleneck=True,
                                  dropRate=args.droprate, normalizer=None, method=args.method, p=args.p)
-        # elif args.model_arch == 'densenet-supcon':
-        #     from models.densenet_ss import DenseNet3
-        #     model = DenseNet3(args.layers, num_classes, args.growth, reduction=args.reduce, bottleneck=True,
-        #                              dropRate=args.droprate, normalizer=None, method=args.method, p=args.p)
+        elif args.model_arch == 'densenet-supcon':
+            from models.densenet_ss import DenseNet3
+            model = DenseNet3(args.layers, num_classes, args.growth, reduction=args.reduce, bottleneck=True,
+                                     dropRate=args.droprate, normalizer=None, method=args.method, p=args.p)
         elif args.model_arch == 'resnet18':
             from models.resnet import resnet18_cifar
             model = resnet18_cifar(num_classes=num_classes, method=args.method, p=args.p)
