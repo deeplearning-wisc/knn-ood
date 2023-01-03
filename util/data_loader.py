@@ -37,7 +37,7 @@ transform_train = transforms.Compose([
 
 transform_train_largescale = transforms.Compose([
     transforms.Resize(256),
-    transforms.RandomSizedCrop(224),
+    transforms.RandomResizedCrop(224),
     transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406],
