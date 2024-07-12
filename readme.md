@@ -69,7 +69,7 @@ We provide links and instructions to download each dataset:
 
 ### 3.  Pre-trained model
 
-Please download [Pre-trained models](https://drive.google.com/file/d/1PJ5SXx0MLvq8kSZ4dmdAJaR77BHz5Y-6/view?usp=sharing) and place in the `./checkpoints` folder.
+Please download [Pre-trained models](https://drive.google.com/file/d/13qZeK05YgVWRAHHdl_s20Yb8gKZgP0dG/view?usp=drive_link) and place in the `./checkpoints` folder.
 
 ## Preliminaries
 It is tested under Ubuntu Linux 20.04 and Python 3.8 environment, and requries some packages to be installed:
